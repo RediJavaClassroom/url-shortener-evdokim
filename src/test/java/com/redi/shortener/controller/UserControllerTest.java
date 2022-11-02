@@ -1,6 +1,7 @@
 package com.redi.shortener.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.redi.shortener.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,24 +13,23 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = UserController.class)
 class UserControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+  @Autowired private MockMvc mockMvc;
 
-    @MockBean
-    private UserService userService;
+  @MockBean private UserService userService;
 
-    @Test
-    void createUsers() throws Exception {
-        final String body = """
+  @Test
+  void createUsers() throws Exception {
+    final String body = """
             {"name": "Jose", "email": "jose@example.com"}""";
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/users")
+    mockMvc
+        .perform(
+            MockMvcRequestBuilders.post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(body)).andExpect(status().isOk());
-    }
+                .content(body))
+        .andExpect(status().isOk());
+  }
 }
